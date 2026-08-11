@@ -10,6 +10,8 @@ public class BankingSystem {
 
         createAccount();
 
+        deposit();
+
         scanner.close();
     }
 
@@ -40,5 +42,38 @@ public class BankingSystem {
         System.out.println("Account created successfully!");
 
         account.displayAccount();
+    }
+
+    // ================= DEPOSIT =================
+
+    static void deposit() {
+
+        System.out.println("\n===== DEPOSIT =====");
+
+        System.out.print("Enter Account ID: ");
+        int accountId = scanner.nextInt();
+
+        // HashMap direct lookup
+        Account account = accounts.get(accountId);
+
+        if (account == null) {
+
+            System.out.println("Account not found!");
+            return;
+        }
+
+        System.out.print("Enter deposit amount: ");
+        double amount = scanner.nextDouble();
+
+        if (amount <= 0) {
+
+            System.out.println("Invalid deposit amount!");
+            return;
+        }
+
+        account.deposit(amount);
+
+        System.out.println("Amount deposited successfully!");
+        System.out.println("Current Balance: ₹" + account.getBalance());
     }
 }
