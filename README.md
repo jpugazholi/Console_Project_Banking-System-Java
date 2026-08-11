@@ -76,7 +76,7 @@ BankingSystem/
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-github-repository-url>
+git clone <https://github.com/jpugazholi/Console_Project_Banking-System-Java.git>
 ```
 
 ### 2. Open the Project
