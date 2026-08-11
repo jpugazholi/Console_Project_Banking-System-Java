@@ -59,7 +59,7 @@ This project is developed using **Core Java** and demonstrates important **Objec
 
 ## 📂 Project Structure
 
-```text
+
 BankingSystem/
 │
 ├── src/
@@ -69,7 +69,7 @@ BankingSystem/
 │
 ├── README.md
 └── .gitignore
-```
+
 
 ## ▶️ How to Run
 
