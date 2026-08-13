@@ -1,9 +1,14 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class BankingSystem {
 
     static HashMap<Integer, Account> accounts = new HashMap<>();
+
+    static HashMap<String, java.util.List<Integer>> customerIndex =
+            new HashMap<>();
+
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -18,7 +23,9 @@ public class BankingSystem {
             System.out.println("3. Withdraw");
             System.out.println("4. Check Balance");
             System.out.println("5. Close Account");
-            System.out.println("6. Exit");
+            System.out.println("6. Transfer");
+            System.out.println("7.Find Customer Accounts");
+            System.out.println("8. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -46,6 +53,14 @@ public class BankingSystem {
                     break;
 
                 case 6:
+                    transfer();
+                    break;
+
+                case 7:
+                    findCustomerAccounts();
+                    break;
+
+                case 8:
                     System.out.println(
                             "Thank you for using Banking System!"
                     );
@@ -55,7 +70,7 @@ public class BankingSystem {
                     System.out.println("Invalid choice!");
             }
 
-        } while (choice != 6);
+        } while (choice != 8);
 
         scanner.close();
     }
@@ -83,6 +98,10 @@ public class BankingSystem {
         Account account = new Account(accountId, name);
 
         accounts.put(accountId, account);
+
+        customerIndex
+                .computeIfAbsent(name, k -> new ArrayList<>())
+                .add(accountId);
 
         System.out.println("Account created successfully!");
 
@@ -202,9 +221,24 @@ public class BankingSystem {
 
         try {
 
-            findAccount(accountId);
+            Account account = findAccount(accountId);
 
             accounts.remove(accountId);
+
+            // Remove account ID from customer index
+            String customerName = account.getCustomerName();
+
+            java.util.List<Integer> accountIds =
+                    customerIndex.get(customerName);
+
+            if (accountIds != null) {
+
+                accountIds.remove(Integer.valueOf(accountId));
+
+                if (accountIds.isEmpty()) {
+                    customerIndex.remove(customerName);
+                }
+            }
 
             System.out.println("Account closed successfully!");
 
@@ -213,6 +247,135 @@ public class BankingSystem {
             System.out.println(e.getMessage());
         }
     }
+
+    // ================= TRANSFER =================
+
+    static void transfer() {
+
+        System.out.println("\n===== TRANSFER =====");
+
+        System.out.print("Enter Sender Account ID: ");
+        int fromId = scanner.nextInt();
+
+        System.out.print("Enter Receiver Account ID: ");
+        int toId = scanner.nextInt();
+
+        System.out.print("Enter transfer amount: ");
+        double amount = scanner.nextDouble();
+
+        try {
+
+            // Check both accounts BEFORE withdrawing
+            Account fromAccount = findAccount(fromId);
+            Account toAccount = findAccount(toId);
+
+            if (fromId == toId) {
+
+                System.out.println(
+                        "Cannot transfer to the same account!"
+                );
+                return;
+            }
+
+            if (amount <= 0) {
+
+                System.out.println(
+                        "Invalid transfer amount!"
+                );
+                return;
+            }
+
+            if (amount > fromAccount.getBalance()) {
+
+                throw new InsufficientFundsException(
+                        "Insufficient funds! Available balance: ₹"
+                                + fromAccount.getBalance()
+                );
+            }
+
+            // Withdraw from sender
+            fromAccount.withdraw(amount);
+
+            try {
+
+                // Deposit into receiver
+                toAccount.deposit(amount);
+
+                System.out.println(
+                        "Transfer successful!"
+                );
+
+                System.out.println(
+                        "Sender Balance: ₹"
+                                + fromAccount.getBalance()
+                );
+
+                System.out.println(
+                        "Receiver Balance: ₹"
+                                + toAccount.getBalance()
+                );
+
+            } catch (Exception e) {
+
+                // Rollback sender balance
+                fromAccount.deposit(amount);
+
+                System.out.println(
+                        "Transfer failed!"
+                );
+
+                System.out.println(
+                        "Transaction rolled back successfully."
+                );
+            }
+
+        } catch (AccountNotFoundException | InsufficientFundsException e) {
+
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // ================= FIND CUSTOMER ACCOUNTS =================
+
+static void findCustomerAccounts() {
+
+    System.out.println("\n===== CUSTOMER ACCOUNT SEARCH =====");
+
+    scanner.nextLine();
+
+    System.out.print("Enter Customer Name: ");
+    String name = scanner.nextLine();
+
+    java.util.List<Integer> accountIds =
+            customerIndex.get(name);
+
+    if (accountIds == null || accountIds.isEmpty()) {
+
+        System.out.println(
+                "No accounts found for customer: " + name
+        );
+
+        return;
+    }
+
+    System.out.println(
+            "Accounts belonging to " + name + ":"
+    );
+
+    for (Integer accountId : accountIds) {
+
+        Account account = accounts.get(accountId);
+
+        if (account != null) {
+
+            System.out.println(
+                    "Account ID: " + accountId
+                            + " | Balance: ₹"
+                            + account.getBalance()
+            );
+        }
+    }
+}
 
     // ================= FIND ACCOUNT =================
 

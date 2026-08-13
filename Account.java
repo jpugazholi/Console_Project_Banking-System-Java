@@ -1,8 +1,14 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Account {
 
     private int accountId;
     private String customerName;
     private double balance;
+
+    // Transaction history
+    private List<Transaction> transactions = new ArrayList<>();
 
     // Constructor
     public Account(int accountId, String customerName) {
@@ -26,6 +32,11 @@ public class Account {
         return balance;
     }
 
+    // Get Transaction History
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
     // Deposit
     public void deposit(double amount) {
 
@@ -35,6 +46,15 @@ public class Account {
         }
 
         balance += amount;
+
+        transactions.add(
+                new Transaction(
+                        "DEPOSIT",
+                        amount,
+                        accountId,
+                        accountId
+                )
+        );
     }
 
     // Withdraw
@@ -53,6 +73,15 @@ public class Account {
         }
 
         balance -= amount;
+
+        transactions.add(
+                new Transaction(
+                        "WITHDRAW",
+                        amount,
+                        accountId,
+                        accountId
+                )
+        );
     }
 
     // Display Account
