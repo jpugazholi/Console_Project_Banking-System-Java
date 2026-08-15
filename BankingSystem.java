@@ -24,8 +24,9 @@ public class BankingSystem {
             System.out.println("4. Check Balance");
             System.out.println("5. Close Account");
             System.out.println("6. Transfer");
-            System.out.println("7.Find Customer Accounts");
-            System.out.println("8. Exit");
+            System.out.println("7. Find Customer Accounts");
+            System.out.println("8. Reverse Last Transaction");
+            System.out.println("9. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -61,16 +62,18 @@ public class BankingSystem {
                     break;
 
                 case 8:
-                    System.out.println(
-                            "Thank you for using Banking System!"
-                    );
+                    reverseLastTransaction();
+                    break;
+
+                case 9:
+                    System.out.println("Thank you for using Banking System!");
                     break;
 
                 default:
                     System.out.println("Invalid choice!");
             }
 
-        } while (choice != 8);
+        } while (choice != 9);
 
         scanner.close();
     }
@@ -172,8 +175,7 @@ public class BankingSystem {
                     "Current Balance: ₹" + account.getBalance()
             );
 
-        } catch (AccountNotFoundException |
-                 InsufficientFundsException e) {
+        } catch (AccountNotFoundException |  InsufficientFundsException e) {
 
             System.out.println(e.getMessage());
         }
@@ -334,6 +336,27 @@ public class BankingSystem {
             System.out.println(e.getMessage());
         }
     }
+
+    // ================= REVERSE LAST TRANSACTION =================
+
+static void reverseLastTransaction() {
+
+    System.out.println("\n===== REVERSE LAST TRANSACTION =====");
+
+    System.out.print("Enter Account ID: ");
+    int accountId = scanner.nextInt();
+
+    try {
+
+        Account account = findAccount(accountId);
+
+        account.reverseLastTransaction();
+
+    } catch (AccountNotFoundException | InsufficientFundsException e) {
+
+        System.out.println(e.getMessage());
+    }
+}
 
     // ================= FIND CUSTOMER ACCOUNTS =================
 
