@@ -66,7 +66,9 @@ public class BankingSystem {
                     break;
 
                 case 9:
-                    System.out.println("Thank you for using Banking System!");
+                    System.out.println(
+                            "Thank you for using Banking System!"
+                    );
                     break;
 
                 default:
@@ -136,6 +138,7 @@ public class BankingSystem {
             account.deposit(amount);
 
             System.out.println("Amount deposited successfully!");
+
             System.out.println(
                     "Current Balance: ₹" + account.getBalance()
             );
@@ -164,18 +167,24 @@ public class BankingSystem {
 
             if (amount <= 0) {
 
-                System.out.println("Invalid withdrawal amount!");
+                System.out.println(
+                        "Invalid withdrawal amount!"
+                );
                 return;
             }
 
             account.withdraw(amount);
 
-            System.out.println("Amount withdrawn successfully!");
+            System.out.println(
+                    "Amount withdrawn successfully!"
+            );
+
             System.out.println(
                     "Current Balance: ₹" + account.getBalance()
             );
 
-        } catch (AccountNotFoundException |  InsufficientFundsException e) {
+        } catch (AccountNotFoundException |
+                 InsufficientFundsException e) {
 
             System.out.println(e.getMessage());
         }
@@ -194,17 +203,7 @@ public class BankingSystem {
 
             Account account = findAccount(accountId);
 
-            System.out.println("----------------------------");
-            System.out.println(
-                    "Account ID   : " + account.getAccountId()
-            );
-            System.out.println(
-                    "Account Name : " + account.getCustomerName()
-            );
-            System.out.println(
-                    "Balance      : ₹" + account.getBalance()
-            );
-            System.out.println("----------------------------");
+            account.displayAccount();
 
         } catch (AccountNotFoundException e) {
 
@@ -227,22 +226,27 @@ public class BankingSystem {
 
             accounts.remove(accountId);
 
-            // Remove account ID from customer index
-            String customerName = account.getCustomerName();
+            String customerName =
+                    account.getCustomerName();
 
             java.util.List<Integer> accountIds =
                     customerIndex.get(customerName);
 
             if (accountIds != null) {
 
-                accountIds.remove(Integer.valueOf(accountId));
+                accountIds.remove(
+                        Integer.valueOf(accountId)
+                );
 
                 if (accountIds.isEmpty()) {
+
                     customerIndex.remove(customerName);
                 }
             }
 
-            System.out.println("Account closed successfully!");
+            System.out.println(
+                    "Account closed successfully!"
+            );
 
         } catch (AccountNotFoundException e) {
 
@@ -267,8 +271,8 @@ public class BankingSystem {
 
         try {
 
-            // Check both accounts BEFORE withdrawing
             Account fromAccount = findAccount(fromId);
+
             Account toAccount = findAccount(toId);
 
             if (fromId == toId) {
@@ -276,6 +280,7 @@ public class BankingSystem {
                 System.out.println(
                         "Cannot transfer to the same account!"
                 );
+
                 return;
             }
 
@@ -284,6 +289,7 @@ public class BankingSystem {
                 System.out.println(
                         "Invalid transfer amount!"
                 );
+
                 return;
             }
 
@@ -295,12 +301,10 @@ public class BankingSystem {
                 );
             }
 
-            // Withdraw from sender
             fromAccount.withdraw(amount);
 
             try {
 
-                // Deposit into receiver
                 toAccount.deposit(amount);
 
                 System.out.println(
@@ -319,7 +323,6 @@ public class BankingSystem {
 
             } catch (Exception e) {
 
-                // Rollback sender balance
                 fromAccount.deposit(amount);
 
                 System.out.println(
@@ -331,7 +334,8 @@ public class BankingSystem {
                 );
             }
 
-        } catch (AccountNotFoundException | InsufficientFundsException e) {
+        } catch (AccountNotFoundException |
+                 InsufficientFundsException e) {
 
             System.out.println(e.getMessage());
         }
@@ -339,79 +343,90 @@ public class BankingSystem {
 
     // ================= REVERSE LAST TRANSACTION =================
 
-static void reverseLastTransaction() {
+    static void reverseLastTransaction() {
 
-    System.out.println("\n===== REVERSE LAST TRANSACTION =====");
+        System.out.println(
+                "\n===== REVERSE LAST TRANSACTION ====="
+        );
 
-    System.out.print("Enter Account ID: ");
-    int accountId = scanner.nextInt();
+        System.out.print("Enter Account ID: ");
+        int accountId = scanner.nextInt();
 
-    try {
+        try {
 
-        Account account = findAccount(accountId);
+            Account account = findAccount(accountId);
 
-        account.reverseLastTransaction();
+            account.reverseLastTransaction();
 
-    } catch (AccountNotFoundException | InsufficientFundsException e) {
+        } catch (AccountNotFoundException |
+                 InsufficientFundsException e) {
 
-        System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
+        }
     }
-}
 
     // ================= FIND CUSTOMER ACCOUNTS =================
 
-static void findCustomerAccounts() {
-
-    System.out.println("\n===== CUSTOMER ACCOUNT SEARCH =====");
-
-    scanner.nextLine();
-
-    System.out.print("Enter Customer Name: ");
-    String name = scanner.nextLine();
-
-    java.util.List<Integer> accountIds =
-            customerIndex.get(name);
-
-    if (accountIds == null || accountIds.isEmpty()) {
+    static void findCustomerAccounts() {
 
         System.out.println(
-                "No accounts found for customer: " + name
+                "\n===== CUSTOMER ACCOUNT SEARCH ====="
         );
 
-        return;
-    }
+        scanner.nextLine();
 
-    System.out.println(
-            "Accounts belonging to " + name + ":"
-    );
+        System.out.print("Enter Customer Name: ");
+        String name = scanner.nextLine();
 
-    for (Integer accountId : accountIds) {
+        java.util.List<Integer> accountIds =
+                customerIndex.get(name);
 
-        Account account = accounts.get(accountId);
-
-        if (account != null) {
+        if (accountIds == null ||
+                accountIds.isEmpty()) {
 
             System.out.println(
-                    "Account ID: " + accountId
-                            + " | Balance: ₹"
-                            + account.getBalance()
+                    "No accounts found for customer: "
+                            + name
             );
+
+            return;
+        }
+
+        System.out.println(
+                "Accounts belonging to " + name + ":"
+        );
+
+        for (Integer accountId : accountIds) {
+
+            Account account =
+                    accounts.get(accountId);
+
+            if (account != null) {
+
+                System.out.println(
+                        "Account ID: " + accountId
+                                + " | Balance: ₹"
+                                + account.getBalance()
+                );
+            }
         }
     }
-}
 
     // ================= FIND ACCOUNT =================
 
     static Account findAccount(int accountId)
             throws AccountNotFoundException {
 
-        if (!accounts.containsKey(accountId)) {
+        Account account = accounts.get(accountId);
+
+        if (account == null) {
 
             throw new AccountNotFoundException(
-                    "Account not found! Account ID: " + accountId
+                    "Account not found! Account ID: "
+                            + accountId
             );
         }
 
-        return accounts.get(accountId);
+        return account;
     }
 }
