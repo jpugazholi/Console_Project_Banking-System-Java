@@ -125,7 +125,6 @@ public void reverseLastTransaction()
 
         if (amount > balance) {
 
-            // Put transaction back if reversal is not possible
             transactions.add(lastTransaction);
 
             throw new InsufficientFundsException(
