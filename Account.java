@@ -23,6 +23,10 @@ public class Account {
         return balance;
     }
 
+    public void deposit(double amount) {
+    balance += amount;
+    }
+
     public void displayAccount() {
 
         System.out.println("----------------------------");

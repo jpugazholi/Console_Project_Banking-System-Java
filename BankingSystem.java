@@ -16,7 +16,8 @@ public class BankingSystem {
 
             System.out.println("\n===== BANKING SYSTEM =====");
             System.out.println("1. Create Account");
-            System.out.println("2. Exit");
+            System.out.println("2. Deposit");
+            System.out.println("3. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -28,8 +29,11 @@ public class BankingSystem {
                     break;
 
                 case 2:
-                    System.out.println(
-                            "Thank you for using Banking System!"
+                    deposit();
+                    break;
+
+                case 3:
+                    System.out.println("Thank you for using Banking System!"
                     );
                     break;
 
@@ -37,7 +41,7 @@ public class BankingSystem {
                     System.out.println("Invalid choice!");
             }
 
-        } while (choice != 2);
+        } while (choice != 3);
 
         scanner.close();
     }
@@ -73,4 +77,39 @@ public class BankingSystem {
 
         account.displayAccount();
     }
+
+    static void deposit() {
+
+    System.out.println("\n===== DEPOSIT =====");
+
+    System.out.print("Enter Account ID: ");
+    int accountId = scanner.nextInt();
+
+    Account account = accounts.get(accountId);
+
+    if (account == null) {
+
+        System.out.println(
+                "Account not found! Account ID: " + accountId
+        );
+
+        return;
+    }
+
+    System.out.print("Enter deposit amount: ");
+    double amount = scanner.nextDouble();
+
+    if (amount <= 0) {
+
+        System.out.println("Invalid deposit amount!");
+        return;
+    }
+
+    account.deposit(amount);
+
+    System.out.println("Amount deposited successfully!");
+    System.out.println(
+            "Current Balance: ₹" + account.getBalance()
+    );
+}
 }
