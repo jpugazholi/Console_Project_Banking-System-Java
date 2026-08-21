@@ -17,7 +17,8 @@ public class BankingSystem {
             System.out.println("1. Create Account");
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
-            System.out.println("4. Exit");
+            System.out.println("4. Check Balance");
+            System.out.println("5. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -37,6 +38,10 @@ public class BankingSystem {
                     break;
 
                 case 4:
+                    checkBalance();
+                    break;
+
+                case 5:
                     System.out.println(
                             "Thank you for using Banking System!"
                     );
@@ -46,7 +51,7 @@ public class BankingSystem {
                     System.out.println("Invalid choice!");
             }
 
-        } while (choice != 4);
+        } while (choice != 5);
 
         scanner.close();
     }
@@ -163,4 +168,38 @@ public class BankingSystem {
             System.out.println(e.getMessage());
         }
     }
+
+    // ================= CHECK BALANCE =================
+
+static void checkBalance() {
+
+    System.out.println("\n===== CHECK BALANCE =====");
+
+    System.out.print("Enter Account ID: ");
+    int accountId = scanner.nextInt();
+
+    Account account = accounts.get(accountId);
+
+    if (account == null) {
+
+        System.out.println(
+                "Account not found! Account ID: " + accountId
+        );
+
+        return;
+    }
+
+    System.out.println("----------------------------");
+    System.out.println(
+            "Account ID   : " + account.getAccountId()
+    );
+    System.out.println(
+            "Account Name : " + account.getCustomerName()
+    );
+    System.out.println(
+            "Balance      : ₹" + account.getBalance()
+    );
+    System.out.println("----------------------------");
+}
+
 }
