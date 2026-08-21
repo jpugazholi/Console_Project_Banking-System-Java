@@ -129,44 +129,47 @@ public class BankingSystem {
 
     // ================= WITHDRAW =================
 
-    static void withdraw() {
+static void withdraw() {
 
-        System.out.println("\n===== WITHDRAW =====");
+    System.out.println("\n===== WITHDRAW =====");
 
-        System.out.print("Enter Account ID: ");
-        int accountId = scanner.nextInt();
+    System.out.print("Enter Account ID: ");
+    int accountId = scanner.nextInt();
 
-        Account account = accounts.get(accountId);
+    Account account = accounts.get(accountId);
 
-        if (account == null) {
+    if (account == null) {
 
-            System.out.println(
-                    "Account not found! Account ID: " + accountId
-            );
+        System.out.println(
+                "Account not found! Account ID: " + accountId
+        );
 
-            return;
-        }
-
-        System.out.print("Enter withdrawal amount: ");
-        double amount = scanner.nextDouble();
-
-        if (amount <= 0) {
-
-            System.out.println("Invalid withdrawal amount!");
-            return;
-        }
-
-        account.withdraw(amount);
-
-        if (amount <= account.getBalance() + amount) {
-            System.out.println(
-                    "Amount withdrawn successfully!"
-            );
-            System.out.println(
-                    "Current Balance: ₹" + account.getBalance()
-            );
-        }
+        return;
     }
+
+    System.out.print("Enter withdrawal amount: ");
+    double amount = scanner.nextDouble();
+
+    if (amount <= 0) {
+
+        System.out.println("Invalid withdrawal amount!");
+        return;
+    }
+
+    boolean success = account.withdraw(amount);
+
+    if (success) {
+
+        System.out.println(
+                "Amount withdrawn successfully!"
+        );
+
+        System.out.println(
+                "Current Balance: ₹" + account.getBalance()
+        );
+    }
+}
+
 
     // ================= CHECK BALANCE =================
 

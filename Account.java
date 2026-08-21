@@ -31,7 +31,7 @@ public class Account {
 
     // ================= WITHDRAW =================
 
-    public void withdraw(double amount) {
+    public boolean withdraw(double amount) {
 
         if (amount > balance) {
 
@@ -40,10 +40,11 @@ public class Account {
                             + balance
             );
 
-            return;
+            return false;
         }
 
         balance -= amount;
+        return true;
     }
 
     // ================= DISPLAY ACCOUNT =================
