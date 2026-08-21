@@ -18,7 +18,8 @@ public class BankingSystem {
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
             System.out.println("4. Check Balance");
-            System.out.println("5. Exit");
+            System.out.println("5. View All Accounts");
+            System.out.println("6. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -42,6 +43,10 @@ public class BankingSystem {
                     break;
 
                 case 5:
+                    viewAllAccounts();
+                    break;
+
+                case 6:
                     System.out.println(
                             "Thank you for using Banking System!"
                     );
@@ -51,7 +56,7 @@ public class BankingSystem {
                     System.out.println("Invalid choice!");
             }
 
-        } while (choice != 5);
+        } while (choice != 6);
 
         scanner.close();
     }
@@ -171,35 +176,63 @@ public class BankingSystem {
 
     // ================= CHECK BALANCE =================
 
-static void checkBalance() {
+    static void checkBalance() {
 
-    System.out.println("\n===== CHECK BALANCE =====");
+        System.out.println("\n===== CHECK BALANCE =====");
 
-    System.out.print("Enter Account ID: ");
-    int accountId = scanner.nextInt();
+        System.out.print("Enter Account ID: ");
+        int accountId = scanner.nextInt();
 
-    Account account = accounts.get(accountId);
+        Account account = accounts.get(accountId);
 
-    if (account == null) {
+        if (account == null) {
 
+            System.out.println(
+                    "Account not found! Account ID: " + accountId
+            );
+
+            return;
+        }
+
+        System.out.println("----------------------------");
         System.out.println(
-                "Account not found! Account ID: " + accountId
+                "Account ID   : " + account.getAccountId()
         );
-
-        return;
+        System.out.println(
+                "Account Name : " + account.getCustomerName()
+        );
+        System.out.println(
+                "Balance      : ₹" + account.getBalance()
+        );
+        System.out.println("----------------------------");
     }
 
-    System.out.println("----------------------------");
-    System.out.println(
-            "Account ID   : " + account.getAccountId()
-    );
-    System.out.println(
-            "Account Name : " + account.getCustomerName()
-    );
-    System.out.println(
-            "Balance      : ₹" + account.getBalance()
-    );
-    System.out.println("----------------------------");
-}
+    // ================= VIEW ALL ACCOUNTS =================
 
+    static void viewAllAccounts() {
+
+        System.out.println("\n===== ALL ACCOUNTS =====");
+
+        if (accounts.isEmpty()) {
+
+            System.out.println("No accounts available!");
+            return;
+        }
+
+        for (Account account : accounts.values()) {
+
+            System.out.println("----------------------------");
+            System.out.println(
+                    "Account ID   : " + account.getAccountId()
+            );
+            System.out.println(
+                    "Account Name : " + account.getCustomerName()
+            );
+            System.out.println(
+                    "Balance      : ₹" + account.getBalance()
+            );
+        }
+
+        System.out.println("----------------------------");
+    }
 }
