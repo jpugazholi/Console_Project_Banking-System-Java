@@ -1,13 +1,12 @@
 public class Account {
 
     private int accountId;
-    private String customerName;
+    private String accountHolderName;
     private double balance;
 
-    public Account(int accountId, String customerName) {
-
+    public Account(int accountId, String accountHolderName) {
         this.accountId = accountId;
-        this.customerName = customerName;
+        this.accountHolderName = accountHolderName;
         this.balance = 0.0;
     }
 
@@ -15,44 +14,37 @@ public class Account {
         return accountId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getAccountHolderName() {
+        return accountHolderName;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    // ================= DEPOSIT =================
-
     public void deposit(double amount) {
         balance += amount;
     }
 
-    // ================= WITHDRAW =================
+    public boolean withdraw(double amount) {
 
-    public void withdraw(double amount) {
+        if (amount <= 0) {
+            return false;
+        }
 
         if (amount > balance) {
-
-            System.out.println(
-                    "Insufficient funds! Available balance: ₹"
-                            + balance
-            );
-
-            return;
+            return false;
         }
 
         balance -= amount;
+        return true;
     }
-
-    // ================= DISPLAY ACCOUNT =================
 
     public void displayAccount() {
 
         System.out.println("----------------------------");
         System.out.println("Account ID   : " + accountId);
-        System.out.println("Account Name : " + customerName);
+        System.out.println("Account Name : " + accountHolderName);
         System.out.println("Balance      : ₹" + balance);
         System.out.println("----------------------------");
     }
