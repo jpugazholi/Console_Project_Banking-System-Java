@@ -27,6 +27,24 @@ public class Account {
     balance += amount;
     }
 
+    // ================= WITHDRAW =================
+
+public void withdraw(double amount) {
+
+    if (amount > balance) {
+
+        System.out.println(
+                "Insufficient funds! Available balance: ₹"
+                        + balance
+        );
+
+        return;
+    }
+
+    balance -= amount;
+
+}
+
     public void displayAccount() {
 
         System.out.println("----------------------------");
